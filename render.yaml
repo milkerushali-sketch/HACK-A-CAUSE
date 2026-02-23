@@ -1,0 +1,24 @@
+name: aquaguard-api
+runtime: python
+runtimeVersion: 3.9.18
+
+services:
+  - type: web
+    name: aquaguard-api
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.18
+      - key: DEBUG
+        value: false
+      - key: BACKEND_PORT
+        value: 8000
+
+databases:
+  - name: aquaguard-db
+    databaseName: aquaguard
+    engine: postgresql
+    plan: free
