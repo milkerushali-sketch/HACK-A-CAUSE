@@ -1,4 +1,4 @@
-# Frontend - React Dashboard
+# Frontend - React Dashboard (JalNexus)
 
 ## Quick Start
 
@@ -6,97 +6,161 @@
 cd src/frontend
 npm install
 cp .env.example .env
-# Edit .env with your Firebase credentials
+# Edit .env with your Firebase credentials (optional for demo)
 npm start
 ```
 
 App will open at: http://localhost:3000
+
+## Features
+
+### 🔐 Dual-Role Authentication
+- **User Login**: Household residents monitor their water quality
+- **Government Login**: Officials verify data and manage compliance
+- Role-based dashboards with different views
+- Mobile & desktop responsive design
+- Auto-login with localStorage persistence
+
+### 👤 User Dashboard
+- Real-time monitoring of water sources (overhead tank, kitchen tap, storage)
+- Water quality parameters: pH, TDS, Turbidity, Temperature
+- Trend analysis with historical data
+- File complaints with status tracking
+- Download monthly reports & certificates
+- Personal water quality statistics
+
+### 🏛️ Government Portal
+- Data verification interface with chlorine level input
+- Comparison of official vs household water data
+- Area-wise coverage and sensor status
+- Pending verification queue
+- Complaint tracking by area
+- Export reports for compliance
 
 ## Project Structure
 
 ```
 frontend/
 ├── public/
-│   └── index.html              # HTML template
+│   └── index.html
 ├── src/
-│   ├── index.js               # React entry point
-│   ├── App.js                 # Main app component
+│   ├── index.js
+│   ├── App.js                      # Main app with routing
+│   ├── context/
+│   │   └── AuthContext.js          # Auth state management
 │   ├── components/
-│   │   └── SensorCard.js      # Sensor display card
+│   │   └── SensorCard.js
 │   ├── pages/
-│   │   ├── Dashboard.js       # Main dashboard page
-│   │   ├── Alerts.js          # Alerts page
-│   │   └── AddSensor.js       # Add sensor page
+│   │   ├── Login.js                # Dual-role login
+│   │   ├── UserDashboard.js        # User-specific dashboard
+│   │   ├── GovernmentDashboard.js  # Government-specific dashboard
+│   │   ├── Dashboard.js
+│   │   ├── Alerts.js
+│   │   └── AddSensor.js
 │   ├── services/
-│   │   ├── apiService.js      # REST API client
-│   │   └── firebaseConfig.js  # Firebase setup
+│   │   ├── apiService.js
+│   │   └── firebaseConfig.js
 │   └── hooks/
-│       └── useData.js         # Custom React hooks
-└── package.json               # Dependencies
+│       └── useData.js
+└── package.json
 ```
+
+## Authentication Flow
+
+1. **Initial Load**: User sees login page
+2. **Role Selection**: Choose between "User" or "Government Official"
+3. **Login Form**: Email + Password (demo mode accepts any)
+4. **Session**: User data stored in localStorage
+5. **Protected Routes**: Automatically redirect to role-specific dashboard
+6. **Logout**: Clear session and return to login
 
 ## Pages
 
-### Dashboard
-- Real-time sensor monitoring
-- Water quality status
-- System statistics
-- Device management
+### Login Page
+- Role selection cards (User vs Government)
+- Email & password form
+- Password visibility toggle
+- Form validation
+- Demo credentials indicator
 
-### Alerts
-- Alert list and management
-- Severity indicators
-- Acknowledge alerts
-- Real-time updates
+### User Dashboard
+- **Active Water Sources**: pH, TDS, Turbidity monitoring with progress bars
+- **Water Quality Trend**: 5-hour historical chart
+- **My Complaints**: File and track complaints
+- **Reports & Documents**: Download certifications and monthly reports
+- **Monthly Statistics**: Average pH, TDS, Safe Days, Alert Count
 
-### Add Sensor
-- Register new sensors
-- Configure device type
-- Set location
+### Government Portal
+- **Area Coverage**: Sensor count and complaint tracking by region
+- **Data Verification**: Compare official vs household measurements
+- **Pending Verifications**: Queue of reports to verify
+- **Issue Verification Dialog**: Input chlorine level and official notes
+- **Export Reports**: Download compliance data
 
-## Components
+## Mobile & Desktop Responsiveness
 
-- `SensorCard` - Displays sensor data and statistics
-- `Layout` - Navigation and layout wrapper
-- `Dashboard` - Main dashboard page
-- Charts and visualizations (integration-ready)
+✅ **Mobile First Design**
+- Hamburger menu navigation
+- Single column layout
+- Optimized touch targets
+- Readable text sizes
 
-## Custom Hooks
+✅ **Desktop Optimization**
+- Multi-column layouts
+- Full navigation bar
+- Dashboard cards with more details
+- Wider charts
 
-- `useSensors()` - Fetch all sensors
-- `useReadings(sensorId)` - Fetch sensor readings
-- `useSensorStats(sensorId)` - Get sensor statistics
+## Demo Credentials
 
-## Build & Deploy
-
-```bash
-# Build for production
-npm run build
-
-# Test build locally
-npm start  # or npm run build
-
-# Deploy to Vercel
-# (automatic on git push)
+Any email + any password combination:
 ```
+Email: demo@example.com
+Password: password123
+```
+
+Or create your own during login.
 
 ## Environment Variables
 
 See [.env.example](.env.example)
 
-Key variables:
-- `REACT_APP_BACKEND_URL` - Backend API URL
-- `REACT_APP_FIREBASE_*` - Firebase credentials
+## Build & Deploy
 
-## Features
+```bash
+# Development
+npm start
 
-✅ Real-time data monitoring
-✅ Material-UI components
-✅ Responsive design
+# Build for production
+npm run build
+
+# Test
+npm test
+```
+
+## Features Status
+
+✅ Dual-role authentication (User & Government)
+✅ Token-based session management
+✅ Role-based routing & navigation
+✅ Real-time sensor monitoring
+✅ Water quality charts & trends
+✅ Complaint filing system
+✅ Government data verification
+✅ Responsive Material-UI design
+✅ Mobile & desktop support
+✅ Report generation capability
 ✅ Alert management
-✅ Device management
-✅ Firebase integration (ready)
-✅ Chart.js visualization (ready)
+✅ Device registration
+
+## Tech Stack
+
+- **React 18** - UI framework
+- **Material-UI 5** - Component library
+- **React Router v6** - Navigation
+- **Recharts** - Data visualization
+- **Firebase** - Backend (optional)
+- **Axios** - HTTP client
 
 ## Testing
 

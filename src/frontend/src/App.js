@@ -17,12 +17,17 @@ import {
   ListItem,
   ListItemText
 } from '@mui/material';
-import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import LogoutIcon from '@mui/icons-material/Logout';
 import Dashboard from './pages/Dashboard';
 import Alerts from './pages/Alerts';
 import AddSensor from './pages/AddSensor';
+import Login from './pages/Login';
+import UserDashboard from './pages/UserDashboard';
+import GovernmentDashboard from './pages/GovernmentDashboard';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 const Layout = ({ children, unreadAlerts = 0 }) => {
   const location = useLocation();
@@ -30,15 +35,30 @@ const Layout = ({ children, unreadAlerts = 0 }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const { user, role, logout } = useAuth();
 
-  const navItems = [
-    { label: 'Dashboard', path: '/', icon: '📊' },
-    { label: 'Alerts', path: '/alerts', icon: '🚨' },
-    { label: 'Add Sensor', path: '/add-sensor', icon: '➕' }
-  ];
+  const getNavItems = () => {
+    if (role === 'government') {
+      return [
+        { label: 'Gov Dashboard', path: '/gov-dashboard', icon: '🏛️' },
+        { label: 'Verification', path: '/gov-dashboard', icon: '✅' }
+      ];
+    }
+    return [
+      { label: 'Dashboard', path: '/user-dashboard', icon: '📊' },
+      { label: 'Alerts', path: '/alerts', icon: '🚨' },
+      { label: 'Add Sensor', path: '/add-sensor', icon: '➕' }
+    ];
+  };
+
+  const navItems = getNavItems();
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
   };
 
   const drawerContent = (
@@ -61,12 +81,27 @@ const Layout = ({ children, unreadAlerts = 0 }) => {
           />
         </ListItem>
       ))}
+      <ListItem
+        button
+        onClick={() => {
+          handleLogout();
+          setDrawerOpen(false);
+        }}
+        sx={{ backgroundColor: '#ffebee' }}
+      >
+        <ListItemText primary="🚪 Logout" />
+      </ListItem>
     </List>
   );
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <AppBar position="sticky" sx={{ backgroundColor: '#1976d2' }}>
+      <AppBar 
+        position="sticky" 
+        sx={{ 
+          backgroundColor: role === 'government' ? '#D32F2F' : '#1976d2'
+        }}
+      >
         <Toolbar>
           {isMobile && (
             <IconButton
@@ -81,16 +116,15 @@ const Layout = ({ children, unreadAlerts = 0 }) => {
 
           <Typography
             variant="h6"
-            component={Link}
-            to="/"
             sx={{
               flexGrow: 1,
               textDecoration: 'none',
               color: 'inherit',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              cursor: 'pointer'
             }}
           >
-            💧 AquaGuard
+            💧 JalNexus
           </Typography>
 
           {!isMobile && (
@@ -112,11 +146,21 @@ const Layout = ({ children, unreadAlerts = 0 }) => {
             </Box>
           )}
 
-          <IconButton color="inherit" sx={{ ml: 2 }}>
-            <Badge badgeContent={unreadAlerts} color="error">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="body2" sx={{ display: isMobile ? 'none' : 'block' }}>
+              {user?.name || user?.email}
+            </Typography>
+            <IconButton color="inherit" sx={{ ml: 1 }} onClick={handleLogout}>
+              <LogoutIcon />
+            </IconButton>
+            {!isMobile && (
+              <IconButton color="inherit">
+                <Badge badgeContent={unreadAlerts} color="error">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
 
@@ -143,7 +187,7 @@ const Layout = ({ children, unreadAlerts = 0 }) => {
       >
         <Container maxWidth="lg">
           <Typography variant="body2" color="textSecondary" align="center">
-            💧 AquaGuard © 2026 | Water Quality Monitoring System
+            💧 JalNexus © 2026 | Water Quality Monitoring System
           </Typography>
           <Typography variant="caption" color="textSecondary" align="center" sx={{ display: 'block', mt: 1 }}>
             Made with ❤️ for clean water in every home
@@ -154,24 +198,86 @@ const Layout = ({ children, unreadAlerts = 0 }) => {
   );
 };
 
+// Protected Route Component
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return <Typography>Loading...</Typography>;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
+};
+
+// User Role-based Route
+const UserRoute = ({ children }) => {
+  const { user, role, loading } = useAuth();
+
+  if (loading) {
+    return <Typography>Loading...</Typography>;
+  }
+
+  if (!user || role !== 'user') {
+    return <Navigate to="/login" replace />;
+  }
+
+  return (
+    <Layout>
+      {children}
+    </Layout>
+  );
+};
+
+// Government Role-based Route
+const GovernmentRoute = ({ children }) => {
+  const { user, role, loading } = useAuth();
+
+  if (loading) {
+    return <Typography>Loading...</Typography>;
+  }
+
+  if (!user || role !== 'government') {
+    return <Navigate to="/login" replace />;
+  }
+
+  return (
+    <Layout>
+      {children}
+    </Layout>
+  );
+};
+
+function AppRoutes() {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <Login />;
+  }
+
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/user-dashboard" element={<UserDashboard />} />
+        <Route path="/gov-dashboard" element={<GovernmentDashboard />} />
+        <Route path="/alerts" element={<Alerts />} />
+        <Route path="/add-sensor" element={<AddSensor />} />
+        <Route path="/" element={<Navigate to={user ? "/user-dashboard" : "/login"} replace />} />
+      </Routes>
+    </Layout>
+  );
+}
+
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route
-          path="/*"
-          element={
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/alerts" element={<Alerts />} />
-                <Route path="/add-sensor" element={<AddSensor />} />
-              </Routes>
-            </Layout>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

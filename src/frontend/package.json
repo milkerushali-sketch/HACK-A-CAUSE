@@ -1,7 +1,7 @@
 {
-  "name": "aquaguard-frontend",
+  "name": "jalnexus-frontend",
   "version": "1.0.0",
-  "description": "Water Quality Monitoring Dashboard",
+  "description": "JalNexus - Smart Water Quality Monitoring Dashboard",
   "private": true,
   "homepage": "./",
   "dependencies": {
@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.11.0",
     "chart.js": "^4.4.0",
     "react-chartjs-2": "^5.2.0",
+    "recharts": "^2.10.0",
     "firebase": "^10.6.0",
     "axios": "^1.6.0",
     "date-fns": "^2.30.0",

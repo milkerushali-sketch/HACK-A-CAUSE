@@ -34,8 +34,37 @@ JalNexus is a **complete IoT water quality monitoring system** that:
 ✅ **Offline support** using SMS for low-connectivity areas
 ✅ **Hardware-agnostic** - simulated ESP32 sensors + real hardware ready
 ✅ **Easy deployment** - runs locally or in cloud
+✅ **Dual-Role Authentication** - Separate dashboards for Users & Government officials
+✅ **Mobile & Desktop Responsive** - Works on all devices
 
 ---
+
+## 🔐 Authentication System
+
+JalNexus features a **secure dual-role authentication system**:
+
+### User Role
+- Household residents monitor their own water quality
+- Real-time dashboard with sensor data
+- File complaints and track issues
+- Download quality reports and certifications
+- Mobile-friendly interface
+
+### Government Role
+- Authorized officials verify household data
+- Compare official measurements with household readings
+- Manage compliance and discrepancy tracking
+- Export reports for administrative purposes
+- Area-wise coverage monitoring
+
+**Login Features:**
+- Email & password authentication
+- Session persistence with localStorage
+- Role-based navigation & routing
+- Responsive Material-UI interface
+- Demo mode (accepts any credentials)
+
+
 
 ## 🛠️ Tech Stack
 
@@ -127,6 +156,17 @@ npm start
 # App opens at http://localhost:3000
 ```
 
+### Login to the System
+
+1. **Open http://localhost:3000** in your browser
+2. **Select Role**:
+   - 👤 **User Login** - Monitor your household water
+   - 🏛️ **Government Login** - Verify data & manage compliance
+3. **Enter Credentials** (any email + password in demo mode):
+   - Email: `any@email.com`
+   - Password: `any-password`
+4. **Access Dashboard** - Role-specific interface loads automatically
+
 ### Start IoT Simulator
 ```bash
 cd src/iot-simulator
@@ -134,7 +174,7 @@ python simulator.py
 # Generates realistic sensor data and sends to backend
 ```
 
-### All Together (Development)
+### All Together (Full System)
 ```bash
 # Terminal 1 - Backend
 cd src/backend && python main.py
@@ -144,21 +184,41 @@ cd src/frontend && npm start
 
 # Terminal 3 - IoT Simulator
 cd src/iot-simulator && python simulator.py
+
+# Then visit http://localhost:3000 and login!
 ```
 
 ---
 
 ## 📊 Dashboard Features
 
-### Real-time Monitoring
+### User Dashboard
+- **Real-time Monitoring** - Live pH, TDS, turbidity, temperature readings
+- **Multiple Water Sources** - Monitor overhead tank, kitchen tap, storage container
+- **Trend Analysis** - 5-hour historical charts
+- **Complaint System** - File and track complaints
+- **Reports & Certificates** - Download quality reports
+- **Monthly Statistics** - Average readings, safe days, alert count
+
+### Government Portal
+- **Data Verification** - Compare official vs household measurements
+- **Area Coverage** - Sensor count and status by region
+- **Pending Queue** - Verify household reports
+- **Chlorine Input** - Record official chlorination test results
+- **Compliance Reports** - Export for administrative compliance
+- **Discrepancy Analysis** - Identify measurement differences
+- **Complaint Tracking** - Monitor issues by area
+
+### Both Dashboards
+- Real-time Monitoring
 - Live pH, TDS, and turbidity readings
-- Historical trend charts (24 hours)
+- Historical trend charts 
 - Water quality status indicator (Good/Fair/Poor)
 - Smart Alert systems 
 
 ### Anomaly Detection
 - AI-powered anomaly detection
-- Visual alerts for unusual patterns of Smart alert
+- Visual alerts for unusual patterns
 - Anomaly history log
 
 ### Multi-Device Support
@@ -171,8 +231,7 @@ cd src/iot-simulator && python simulator.py
 - Email notifications
 - In-app push notifications
 - Alert history and logs
-### Other features
-- 
+
 ---
 
 ## 🔄 System Architecture
