@@ -242,7 +242,7 @@ cd src/iot-simulator && python simulator.py
 │  (ESP32 Simulator / Real Hardware)                         │
 │  Monitors: pH, TDS, Turbidity                              │
 └──────────────────────┬──────────────────────────────────────┘
-                       │ HTTP/MQTT
+                       │ MQTT
 ┌──────────────────────▼──────────────────────────────────────┐
 │                  Backend Layer (Python/FastAPI)             │
 │  ┌─────────────┐  ┌──────────────┐  ┌──────────────────┐   │
