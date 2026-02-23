@@ -181,3 +181,6 @@ Contributors will be listed in README.md and CONTRIBUTORS.md
 **Happy Contributing!** 🚀
 
 *BlueMind Coder Team*
+ vrushali milke
+ Srushti Mandekar
+ Shruti Muneshwar
