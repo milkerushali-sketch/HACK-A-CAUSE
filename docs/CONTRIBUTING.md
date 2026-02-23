@@ -1,6 +1,6 @@
 # Contributing Guide
 
-## Welcome to AquaGuard! 👋
+## Welcome to Jalnexus! 👋
 
 We're excited that you want to contribute. This document provides guidelines and instructions.
 
@@ -170,11 +170,7 @@ Version format: v1.0.0 (MAJOR.MINOR.PATCH)
 - [ ] Push tags: `git push --tags`
 - [ ] Create release notes
 
-## Questions?
 
-- Open an issue on GitHub
-- Ask in discussions
-- Email: dev@aquaguard.local
 
 ## Recognition
 
@@ -184,4 +180,4 @@ Contributors will be listed in README.md and CONTRIBUTORS.md
 
 **Happy Contributing!** 🚀
 
-*AquaGuard Team*
+*BlueMind Coder Team*
