@@ -154,7 +154,7 @@ cd src/iot-simulator && python simulator.py
 - Live pH, TDS, and turbidity readings
 - Historical trend charts (24 hours)
 - Water quality status indicator (Good/Fair/Poor)
-- Smart Alert systems 
+- Smart Alert systems (red , yellow,green)
 
 ### Anomaly Detection
 - AI-powered anomaly detection
@@ -172,7 +172,10 @@ cd src/iot-simulator && python simulator.py
 - In-app push notifications
 - Alert history and logs
 ### Other features
-- 
+- past cholrination report
+- graph of smart alert report
+- user file complaints of water contamination
+- user  monthly feedback
 ---
 
 ## 🔄 System Architecture
